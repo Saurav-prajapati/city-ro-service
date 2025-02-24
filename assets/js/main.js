@@ -1,229 +1,209 @@
-/************* Main Js File ************************
-    Template Name: Felona
-    Author: Themescare
-    Version: 1.0
-    Copyright 2019
-*************************************************************/
+/**
+* Template Name: Bethany
+* Template URL: https://bootstrapmade.com/bethany-free-onepage-bootstrap-theme/
+* Updated: Aug 07 2024 with Bootstrap v5.3.3
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
 
+(function() {
+  "use strict";
 
-/*------------------------------------------------------------------------------------
-    
-JS INDEX
-=============
+  /**
+   * Apply .scrolled class to the body as the page is scrolled down
+   */
+  function toggleScrolled() {
+    const selectBody = document.querySelector('body');
+    const selectHeader = document.querySelector('#header');
+    if (!selectHeader.classList.contains('scroll-up-sticky') && !selectHeader.classList.contains('sticky-top') && !selectHeader.classList.contains('fixed-top')) return;
+    window.scrollY > 100 ? selectBody.classList.add('scrolled') : selectBody.classList.remove('scrolled');
+  }
 
-01 - Main Slider JS
-02 - Testimonial Slider JS
-03 - Select JS
-04 - Counter JS
-05 - Youtube Popup JS
-06 - Search JS
-07 - Responsive Menu JS
-08 - Back To Top
+  document.addEventListener('scroll', toggleScrolled);
+  window.addEventListener('load', toggleScrolled);
 
+  /**
+   * Mobile nav toggle
+   */
+  const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
 
--------------------------------------------------------------------------------------*/
+  function mobileNavToogle() {
+    document.querySelector('body').classList.toggle('mobile-nav-active');
+    mobileNavToggleBtn.classList.toggle('bi-list');
+    mobileNavToggleBtn.classList.toggle('bi-x');
+  }
+  mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
 
+  /**
+   * Hide mobile nav on same-page/hash links
+   */
+  document.querySelectorAll('#navmenu a').forEach(navmenu => {
+    navmenu.addEventListener('click', () => {
+      if (document.querySelector('.mobile-nav-active')) {
+        mobileNavToogle();
+      }
+    });
 
-(function ($) {
-	"use strict";
+  });
 
-	jQuery(document).ready(function ($) {
+  /**
+   * Toggle mobile nav dropdowns
+   */
+  document.querySelectorAll('.navmenu .toggle-dropdown').forEach(navmenu => {
+    navmenu.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.parentNode.classList.toggle('active');
+      this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
+      e.stopImmediatePropagation();
+    });
+  });
 
+  /**
+   * Preloader
+   */
+  const preloader = document.querySelector('#preloader');
+  if (preloader) {
+    window.addEventListener('load', () => {
+      preloader.remove();
+    });
+  }
 
-		/* 
-		=================================================================
-		01 - Main Slider JS
-		=================================================================	
-		*/
+  /**
+   * Scroll top button
+   */
+  let scrollTop = document.querySelector('.scroll-top');
 
-		$(".felona-slide").owlCarousel({
-			animateOut: 'fadeOutLeft',
-			animateIn: 'fadeIn',
-			items: 2,
-			nav: true,
-			dots: false,
-			autoplayTimeout: 7000,
-			autoplaySpeed: 2000,
-			autoplay: true,
-			loop: true,
-			navText: ["<i class='fa fa-long-arrow-left'><i>", "<i class='fa fa-long-arrow-right'><i>"],
-			mouseDrag: true,
-			touchDrag: true,
-			responsive: {
-				0: {
-					items: 1
-				},
-				480: {
-					items: 1
-				},
-				600: {
-					items: 1
-				},
-				750: {
-					items: 1
-				},
-				1000: {
-					items: 1
-				},
-				1200: {
-					items: 1
-				}
-			}
-		});
+  function toggleScrollTop() {
+    if (scrollTop) {
+      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+    }
+  }
+  scrollTop.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 
-		$(".felona-slide").on("translate.owl.carousel", function () {
-			$(".felona-main-slide h2, .felona-main-slide p").removeClass("animated fadeInUp").css("opacity", "0");
-			$(".felona-main-slide .felona-btn").removeClass("animated fadeInDown").css("opacity", "0");
-		});
-		$(".felona-slide").on("translated.owl.carousel", function () {
-			$(".felona-main-slide h2, .felona-main-slide p").addClass("animated fadeInUp").css("opacity", "1");
-			$(".felona-main-slide .felona-btn").addClass("animated fadeInDown").css("opacity", "1");
-		});
+  window.addEventListener('load', toggleScrollTop);
+  document.addEventListener('scroll', toggleScrollTop);
 
+  /**
+   * Animation on scroll function and init
+   */
+  function aosInit() {
+    AOS.init({
+      duration: 600,
+      easing: 'ease-in-out',
+      once: true,
+      mirror: false
+    });
+  }
+  window.addEventListener('load', aosInit);
 
-		/* 
-		=================================================================
-		02 - Testimonial Slider JS
-		=================================================================	
-		*/
+  /**
+   * Initiate glightbox
+   */
+  const glightbox = GLightbox({
+    selector: '.glightbox'
+  });
 
-		$(".testimonial-slide").owlCarousel({
-			autoplay: true,
-			loop: true,
-			margin: 20,
-			touchDrag: true,
-			mouseDrag: true,
-			items: 1,
-			nav: false,
-			dots: true,
-			autoplayTimeout: 6000,
-			autoplaySpeed: 1200,
-			navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-			responsive: {
-				0: {
-					items: 1
-				},
-				480: {
-					items: 1
-				},
-				600: {
-					items: 1
-				},
-				1000: {
-					items: 2
-				},
-				1200: {
-					items: 2
-				}
-			}
-		});
+  /**
+   * Initiate Pure Counter
+   */
+  new PureCounter();
 
+  /**
+   * Init isotope layout and filters
+   */
+  document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
+    let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
+    let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
+    let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
 
-		/* 
-		=================================================================
-		03 - Select JS
-		=================================================================	
-		*/
+    let initIsotope;
+    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
+      initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
+        itemSelector: '.isotope-item',
+        layoutMode: layout,
+        filter: filter,
+        sortBy: sort
+      });
+    });
 
-		$('select').niceSelect();
+    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
+      filters.addEventListener('click', function() {
+        isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
+        this.classList.add('filter-active');
+        initIsotope.arrange({
+          filter: this.getAttribute('data-filter')
+        });
+        if (typeof aosInit === 'function') {
+          aosInit();
+        }
+      }, false);
+    });
 
+  });
 
-		/* 
-		=================================================================
-		04 - Counter JS
-		=================================================================	
-		*/
+  /**
+   * Init swiper sliders
+   */
+  function initSwiper() {
+    document.querySelectorAll(".init-swiper").forEach(function(swiperElement) {
+      let config = JSON.parse(
+        swiperElement.querySelector(".swiper-config").innerHTML.trim()
+      );
 
+      if (swiperElement.classList.contains("swiper-tab")) {
+        initSwiperWithCustomPagination(swiperElement, config);
+      } else {
+        new Swiper(swiperElement, config);
+      }
+    });
+  }
 
-		$('.counter').counterUp({
-			delay: 10,
-			time: 1000
-		});
+  window.addEventListener("load", initSwiper);
 
+  /**
+   * Correct scrolling position upon page load for URLs containing hash links.
+   */
+  window.addEventListener('load', function(e) {
+    if (window.location.hash) {
+      if (document.querySelector(window.location.hash)) {
+        setTimeout(() => {
+          let section = document.querySelector(window.location.hash);
+          let scrollMarginTop = getComputedStyle(section).scrollMarginTop;
+          window.scrollTo({
+            top: section.offsetTop - parseInt(scrollMarginTop),
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+    }
+  });
 
-		/* 
-		=================================================================
-		05 - Youtube Popup JS
-		=================================================================	
-		*/
+  /**
+   * Navmenu Scrollspy
+   */
+  let navmenulinks = document.querySelectorAll('.navmenu a');
 
-		$('.popup-youtube').magnificPopup({
-			disableOn: 700,
-			type: 'iframe',
-			mainClass: 'mfp-fade',
-			removalDelay: 160,
-			preloader: false,
-			fixedContentPos: false
-		});
+  function navmenuScrollspy() {
+    navmenulinks.forEach(navmenulink => {
+      if (!navmenulink.hash) return;
+      let section = document.querySelector(navmenulink.hash);
+      if (!section) return;
+      let position = window.scrollY + 200;
+      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
+        document.querySelectorAll('.navmenu a.active').forEach(link => link.classList.remove('active'));
+        navmenulink.classList.add('active');
+      } else {
+        navmenulink.classList.remove('active');
+      }
+    })
+  }
+  window.addEventListener('load', navmenuScrollspy);
+  document.addEventListener('scroll', navmenuScrollspy);
 
-
-		/* 
-		=================================================================
-		06 - Search JS
-		=================================================================	
-		*/
-
-		$.fn.searchBox = function (ev) {
-
-			var $searchEl = $('.search-elem');
-			var $sField = $('#search-field');
-
-			if (ev === "open") {
-				$searchEl.addClass('search-open')
-			};
-
-			if (ev === 'close') {
-				$searchEl.removeClass('search-open'),
-					$sField.val('');
-			};
-
-
-		}
-
-		$('.search-btn').on('click', function (e) {
-			$(this).searchBox('open');
-			e.preventDefault();
-		});
-
-		$('.search-close').on('click', function () {
-			$(this).searchBox('close');
-		});
-
-
-		/* 
-		=================================================================
-		07 - Responsive Menu JS
-		=================================================================	
-		*/
-		$("ul#felona_navigation").slicknav({
-			prependTo: ".felona-responsive-menu"
-		});
-
-
-		/* 
-		=================================================================
-		08 - Back To Top
-		=================================================================	
-		*/
-		if ($("body").length) {
-			var btnUp = $('<div/>', {
-				'class': 'btntoTop'
-			});
-			btnUp.appendTo('body');
-			$(document).on('click', '.btntoTop', function () {
-				$('html, body').animate({
-					scrollTop: 0
-				}, 700);
-			});
-			$(window).on('scroll', function () {
-				if ($(this).scrollTop() > 200) $('.btntoTop').addClass('active');
-				else $('.btntoTop').removeClass('active');
-			});
-		}
-
-
-	});
-
-
-}(jQuery));
-
+})();
