@@ -1731,6 +1731,9 @@ div#loom-companion-mv3 {
   .header .logo{
     padding: 0 3px;
   }
+  .header .btn-getstarted{
+    display: none;
+  }
 }
 .service_box {
   border: 1px solid black;
